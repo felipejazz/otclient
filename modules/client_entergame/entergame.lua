@@ -722,10 +722,15 @@ function EnterGame.loginSuccess(requestId, jsonSession, jsonWorlds, jsonCharacte
 
     local worlds = {}
     for _, world in ipairs(json.decode(jsonWorlds)) do
+        local worldIp = world.externaladdressprotected or world.externaladdress or world.externaladdressunprotected
+        local worldPort = world.externalportprotected or world.externalport or world.externalportunprotected or 7172
+        pinfo(string.format(">>> [ENTERGAME-WORLD] id=%s, name=%s, ip=%s, port=%s",
+                            tostring(world.id), tostring(world.name),
+                            tostring(worldIp), tostring(worldPort)))
         worlds[world.id] = {
             name = world.name,
-            ip = world.externaladdressprotected,
-            port = world.externalportprotected,
+            ip = worldIp,
+            port = worldPort,
             previewState = world.previewstate == 1,
             pvptype = world.pvptype,
         }
