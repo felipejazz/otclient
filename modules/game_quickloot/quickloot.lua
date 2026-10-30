@@ -27,7 +27,7 @@ function quickLootController:onInit()
     quickLootController:registerEvents(g_game, {
         onQuickLootContainers = QuickLoot.start
     })
-    Keybind.new("Loot", "Quick Loot Nearby Corpses", "Alt+Q", "")
+    Keybind.new("Loot", "Quick Loot Nearby Corpses", "Q", "")
     Keybind.bind("Loot", "Quick Loot Nearby Corpses", {
       {
         type = KEY_DOWN,

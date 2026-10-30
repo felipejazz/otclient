@@ -1479,6 +1479,20 @@ function init()
     Keybind.new("Windows", "Show/hide battle list", "Ctrl+B", "")
     Keybind.bind("Windows", "Show/hide battle list", {{ type = KEY_DOWN, callback = toggle }})
 
+    Keybind.new("Combat", "Attack next target", { [CHAT_MODE.ON] = "", [CHAT_MODE.OFF] = "Space" }, "")
+    Keybind.bind("Combat", "Attack next target", {{ type = KEY_DOWN, callback = function() attackNext() end }})
+
+    Keybind.new("Combat", "Attack previous target", { [CHAT_MODE.ON] = "", [CHAT_MODE.OFF] = "Shift+Space" }, "")
+    Keybind.bind("Combat", "Attack previous target", {{ type = KEY_DOWN, callback = function() attackNext(true) end }})
+
+    Keybind.new("Combat", "Toggle chase mode", "", "")
+    Keybind.bind("Combat", "Toggle chase mode", {{ type = KEY_DOWN, callback = function()
+        if not g_game.isOnline() then return end
+        local currentMode = g_game.getChaseMode()
+        local nextMode = currentMode == ChaseOpponent and DontChase or ChaseOpponent
+        g_game.setChaseMode(nextMode)
+    end }})
+
     -- Setup scrollbar - use default MiniWindow behavior
     local scrollbar = battleWindow:getChildById('miniwindowScrollBar')
     if scrollbar then
@@ -2609,6 +2623,9 @@ function terminate() -- Terminating the Module (unload)
     toggleFilterButton = nil
 
     Keybind.delete("Windows", "Show/hide battle list")
+    Keybind.delete("Combat", "Attack next target")
+    Keybind.delete("Combat", "Attack previous target")
+    Keybind.delete("Combat", "Toggle chase mode")
 
     disconnect(g_game, {
         onAttackingCreatureChange = onAttack,
